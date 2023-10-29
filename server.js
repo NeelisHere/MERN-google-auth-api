@@ -12,9 +12,9 @@ const app = express();
 app.use(cookieSession({
     maxAge: 20 * 1000,
     keys: [process.env.AUTH_SECRET],
-    // httpOnly: true,
-    // sameSite: process.env.NODE_ENV === 'Production'? 'none' : 'lax',
-    // secure: process.env.NODE_ENV === 'Production'
+    httpOnly: true,
+    sameSite: process.env.NODE_ENV === 'Production'? 'none' : 'lax',
+    secure: process.env.NODE_ENV === 'Production'
 }))
 app.use(passport.initialize())
 app.use(passport.session())
