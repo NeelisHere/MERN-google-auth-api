@@ -9,21 +9,22 @@ require('./passport')
 const PORT = process.env.PORT || 8000
 connectDB()
 const app = express();
-app.use(cookieSession({
-    maxAge: 20 * 1000,
-    keys: [process.env.AUTH_SECRET],
-    httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'Production'? 'none' : 'lax',
-    secure: process.env.NODE_ENV === 'Production'
-}))
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.use(cors({
     origin: [process.env.CLIENT_URL],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }))
+app.set('trust proxy', 1) 
+app.use(cookieSession({
+    maxAge: 20 * 1000,
+    keys: [process.env.AUTH_SECRET],
+    httpOnly: true,
+    sameSite: 'none',
+    secure: 'auto'
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.get('/', (req, res) => {
     res.json({ success: true })
